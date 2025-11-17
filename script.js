@@ -3,15 +3,17 @@ let currentScreen = 1;
 let currentQuestionIndex = 0;
 let userResponses = {}; 
 let finalScore = 0;
+let myChart = null;
+let instagramHandle = ''; // ADICIONADO: Variável para armazenar o perfil
 
 // Configuração do Diagnóstico
 const questions = [
-    { id: 1, title: "PERFIL ESTRUTURAL", text: "Sua biografia (bio) e nome de usuário comunicam instantaneamente seu nicho, seu valor e quem você ajuda (público-alvo)?" },
-    { id: 2, title: "CONTEÚDO DE VALOR", text: "Pelo menos 70% do seu conteúdo recente é focado em entregar uma solução clara para o problema do seu público, não apenas em auto-promoção?" },
-    { id: 3, title: "CHAMADAS PARA AÇÃO (CTA)", text: "Você utiliza CTAs claros e estratégicos (salvar, compartilhar, comentar, enviar) em todos os seus Reels e posts para engajar a audiência?" },
-    { id: 4, title: "FORMATO DE VIRALIZAÇÃO", text: "Você posta Reels na frequência ideal (3-5 vezes por semana) e utiliza ganchos fortes nos primeiros 3 segundos para maximizar a retenção e o alcance?" },
-    { id: 5, title: "INTERAÇÃO COM A AUDIÊNCIA", text: "Você responde ativamente a comentários e DMs, e usa caixas de perguntas/enquetes nos Stories diariamente para construir relacionamento?" },
-    { id: 6, title: "IDENTIDADE VISUAL", text: "Seu perfil possui uma identidade visual, paleta de cores e tipografia consistentes que reforçam sua marca e são agradáveis de consumir?" }
+    { id: 1, title: "Estrutura", text: "Sua biografia (bio) e nome de usuário comunicam instantaneamente seu nicho, seu valor e quem você ajuda (público-alvo)?" },
+    { id: 2, title: "Valor", text: "Pelo menos 70% do seu conteúdo recente é focado em entregar uma solução clara para o problema do seu público, não apenas em auto-promoção?" },
+    { id: 3, title: "CTA", text: "Você utiliza CTAs claros e estratégicos (salvar, compartilhar, comentar, enviar) em todos os seus Reels e posts para engajar a audiência?" },
+    { id: 4, title: "Formato", text: "Você posta Reels na frequência ideal (3-5 vezes por semana) e utiliza ganchos fortes nos primeiros 3 segundos para maximizar a retenção e o alcance?" },
+    { id: 5, title: "Interação", text: "Você responde ativamente a comentários e DMs, e usa caixas de perguntas/enquetes nos Stories diariamente para construir relacionamento?" },
+    { id: 6, title: "Identidade", text: "Seu perfil possui uma identidade visual, paleta de cores e tipografia consistentes que reforçam sua marca e são agradáveis de consumir?" }
 ];
 
 const scoring = {
@@ -26,6 +28,22 @@ const levels = [
     { score: 8, name: "CONTEÚDO DESALINHADO", class: "desalinhado", desc: "Você está postando, mas sem estratégia clara. É preciso alinhar nicho, valor e formato urgente." },
     { score: 0, name: "PERFIL INVISÍVEL", class: "invisivel", desc: "Seu perfil carece de elementos básicos de comunicação e atração. Pare de postar e comece a reestruturar!" }
 ];
+
+// FUNÇÃO MODIFICADA PARA VALIDAR O PERFIL ANTES DE IR PARA O QUIZ
+function validateAndGoToQuiz() {
+    const handleInput = document.getElementById('instagramHandle');
+    let handle = handleInput.value.trim();
+
+    if (handle === "") {
+        alert("Por favor, insira seu perfil do Instagram para começar a análise.");
+        return;
+    }
+    
+    // Limpa o @ se o usuário digitar (ex: @perfil -> perfil)
+    instagramHandle = handle.startsWith('@') ? handle.substring(1) : handle;
+    
+    goToScreen(2);
+}
 
 function goToScreen(screenNumber) {
     document.querySelectorAll('.screen').forEach(screen => {
@@ -48,7 +66,7 @@ function renderQuestion(index) {
         return;
     }
     const q = questions[index];
-    document.getElementById('current-question-title').textContent = q.title;
+    document.getElementById('current-question-title').textContent = q.title.toUpperCase(); 
     const container = document.getElementById('questions-container');
     container.innerHTML = `
         <div class="question-item" data-question-id="${q.id}">
@@ -74,31 +92,93 @@ function selectOption(button, questionId) {
 }
 
 function nextQuestion() {
+    // Garante que a resposta foi dada ou assume 1 (Não) para não travar
     const currentQ = questions[currentQuestionIndex];
     if (userResponses[currentQ.id] === undefined) {
-        alert("Por favor, selecione uma opção antes de continuar.");
-        return;
+        userResponses[currentQ.id] = 1;
     }
     currentQuestionIndex++;
     renderQuestion(currentQuestionIndex);
 }
 
+// FUNÇÃO DE RESULTADO - GERA O GRÁFICO
 function calculateResult() {
     finalScore = Object.values(userResponses).reduce((sum, score) => sum + score, 0);
     document.getElementById('final-score').textContent = finalScore;
-    let finalLevel = levels.find(l => finalScore >= l.score) || levels[levels.length - 1];
     
+    let finalLevel = levels.find(l => finalScore >= l.score) || levels[levels.length - 1];
     if (finalScore === 18) { finalLevel = levels[0]; }
     else if (finalScore >= 14) { finalLevel = levels[1]; }
     else if (finalScore >= 8) { finalLevel = levels[2]; }
     else { finalLevel = levels[3]; }
-
     const levelBadge = document.getElementById('final-level');
     levelBadge.textContent = finalLevel.name;
     levelBadge.className = 'level-badge ' + finalLevel.class;
     document.getElementById('level-description').textContent = finalLevel.desc;
+
+    // --- LÓGICA DO GRÁFICO DE RADAR ---
+
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    const chartLabels = questions.map(q => q.title.toUpperCase());
+    const chartData = questions.map(q => userResponses[q.id] || 1); 
+
+    const ctx = document.getElementById('growthChart').getContext('2d');
+    
+    myChart = new Chart(ctx, {
+        type: 'radar', 
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Seu Nível',
+                data: chartData,
+                fill: true,
+                backgroundColor: 'rgba(0, 255, 255, 0.2)', 
+                borderColor: 'rgb(0, 255, 255)', 
+                pointBackgroundColor: 'rgb(0, 255, 255)', 
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(0, 255, 255)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: {
+                    angleLines: {
+                        color: 'rgba(255, 255, 255, 0.2)' 
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.2)' 
+                    },
+                    pointLabels: {
+                        color: 'rgb(224, 224, 224)', 
+                        font: {
+                            family: "'Orbitron', sans-serif",
+                            size: 10
+                        }
+                    },
+                    ticks: {
+                        color: 'rgb(224, 224, 224)', 
+                        backdropColor: 'rgba(0, 0, 0, 0)', 
+                        min: 0,
+                        max: 3, 
+                        stepSize: 1
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false 
+                }
+            }
+        }
+    });
 }
 
+// FUNÇÃO DA IA - MODIFICADA PARA INCLUIR O PERFIL
 async function generateAiReport() {
     const reportContentDiv = document.getElementById('ai-report-text');
     reportContentDiv.innerHTML = '<p class="loading-text">Analisando suas respostas e gerando o plano de ação...</p><div class="spinner"></div>';
@@ -110,14 +190,15 @@ async function generateAiReport() {
     }).join('\n');
     
     const userLevel = document.getElementById('final-level').textContent;
+    const profileContext = instagramHandle ? `do perfil @${instagramHandle}` : 'do seu perfil (não fornecido)'; // ADICIONADO CONTEXTO
 
     const aiPrompt = `
-        Com base nas seguintes respostas do usuário (Pontuação Total: ${finalScore} / 18, Nível: ${userLevel}):
+        Com base nas seguintes respostas do usuário ${profileContext} (Pontuação Total: ${finalScore} / 18, Nível: ${userLevel}):
         ${analysisData}
         
         Gere um diagnóstico profissional e direto sobre o posicionamento e estratégia de viralização do perfil, explicando:
         1. **O que está travando o crescimento e a viralização** (Baseado nos 'Não' e 'Parcial').
-        2. **Onde há falhas na narrativa e autoridade** (Baseado nos pontos fracos em 'Perfil Estrutural' e 'Conteúdo de Valor').
+        2. **Onde há falhas na narrativa e autoridade** (Baseado nos pontos fracos em 'Estrutura' e 'Valor').
         3. **O que pode ser ajustado nas próximas 48 horas** (Dicas práticas e imediatas: Bio, CTA, Ganchos).
         4. **Recomendação final estratégica** para atingir o nível de Viralização Máxima.
         
@@ -153,6 +234,12 @@ function resetApp() {
     currentQuestionIndex = 0;
     userResponses = {};
     finalScore = 0;
+    instagramHandle = ''; // Limpa o perfil
+    
+    if (myChart) {
+        myChart.destroy();
+    }
+    
     goToScreen(1);
     document.querySelector('#screen-2 .cta-button').disabled = false;
 }
