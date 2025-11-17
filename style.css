@@ -41,15 +41,7 @@ body {
 
 /* Telas */
 .screen {
-    display: none;
-    text-align: center;#app-container {
-    /* ... outros estilos ... */
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
-    text-align: center; /* <-- ADICIONE ESTA LINHA */
-    min-height: 500px; /* Altura mínima para consistência */
-}
-
-.screen.active {
+    .screen.active {
     display: block;
 }
 
@@ -320,4 +312,5 @@ p {
     height: auto;  /* Mantém a proporção */
     margin-bottom: 20px; /* Espaço entre o logo e o título */
 }
+
 
