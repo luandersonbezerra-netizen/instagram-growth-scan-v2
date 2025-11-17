@@ -1,10 +1,11 @@
 // /api/generateReport.js
+// CORRIGIDO PARA USAR CommonJS (module.exports)
 
 // 1. Importar o SDK de IA do Google
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // 2. Função principal (Handler) que a Vercel irá executar
-export default async function handler(request, response) {
+async function handler(request, response) {
     // Apenas permitir requisições POST
     if (request.method !== 'POST') {
         return response.status(405).json({ error: 'Método não permitido' });
@@ -49,3 +50,6 @@ export default async function handler(request, response) {
         response.status(500).json({ error: 'Falha ao gerar o relatório de IA.' });
     }
 }
+
+// 8. Exportar a função para a Vercel
+module.exports = handler;
