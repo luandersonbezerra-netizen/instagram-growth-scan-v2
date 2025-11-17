@@ -12,14 +12,20 @@
 <body>
 
     <div id="app-container">
+        
+        <img src="logo.png" alt="Logo da Empresa" class="app-logo">
+
         <div id="screen-1" class="screen active">
             <header class="neon-title">
                 <h1>INSTAGRAM <span class="neon-cyan">GROWTH</span> SCAN</h1>
             </header>
             <p>Diagnóstico de Perfil para Viralização e Resultados.</p>
             <p class="description-text">Responda 6 perguntas chave e descubra o seu nível de prontidão para o crescimento orgânico e a performance de alto impacto no Instagram.</p>
-            <button class="cta-button" onclick="goToScreen(2)">INICIAR ANÁLISE</button>
-            <footer class="footer-text">v2.2 | Gráfico de Radar</footer>
+            
+            <input type="text" id="instagramHandle" placeholder="@seu_perfil_aqui" required class="input-text">
+            
+            <button class="cta-button" onclick="validateAndGoToQuiz()">INICIAR ANÁLISE</button>
+            <footer class="footer-text">v2.3 | Coleta de Perfil</footer>
         </div>
 
         <div id="screen-2" class="screen">
