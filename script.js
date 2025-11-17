@@ -1,5 +1,3 @@
-JavaScript
-
 // VARIÁVEIS DE ESTADO
 let currentScreen = 1;
 let currentQuestionIndex = 0;
