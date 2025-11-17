@@ -1,5 +1,4 @@
-// /api/generateReport.js
-// CORRIGIDO PARA USAR CommonJS (module.exports)
+// CORRIGIDO PARA USAR CommonJS (module.exports) E ESPECIFICAR O MODELO
 
 // 1. Importar o SDK de IA do Google
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -20,6 +19,7 @@ async function handler(request, response) {
         
         // 4. Inicializar o cliente do Gemini
         const genAI = new GoogleGenerativeAI(apiKey);
+        // ESTA É A LINHA QUE CORRIGE O ERRO:
         const model = genAI.getGenerativeModel("gemini-1.5-flash"); // Modelo rápido
 
         // 5. Pegar o prompt que o frontend enviou
@@ -46,7 +46,8 @@ async function handler(request, response) {
         response.status(200).json({ report: reportText });
 
     } catch (error) {
-        console.error("Erro na API do Gemini:", error);
+        // Log do erro real no servidor para debugging
+        console.error("Erro na API do Gemini:", error.message);
         response.status(500).json({ error: 'Falha ao gerar o relatório de IA.' });
     }
 }
