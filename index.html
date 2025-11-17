@@ -6,6 +6,8 @@
     <title>Instagram Growth Scan | Análise de Perfil para Viralização</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -17,7 +19,7 @@
             <p>Diagnóstico de Perfil para Viralização e Resultados.</p>
             <p class="description-text">Responda 6 perguntas chave e descubra o seu nível de prontidão para o crescimento orgânico e a performance de alto impacto no Instagram.</p>
             <button class="cta-button" onclick="goToScreen(2)">INICIAR ANÁLISE</button>
-            <footer class="footer-text">v2.1 | IA-Integrada</footer>
+            <footer class="footer-text">v2.2 | Gráfico de Radar</footer>
         </div>
 
         <div id="screen-2" class="screen">
@@ -40,10 +42,15 @@
                 <div id="final-level" class="level-badge"></div>
             </div>
             <p class="description-text" id="level-description"></p>
+
+            <div class="chart-container">
+                <canvas id="growthChart"></canvas>
+            </div>
             
             <button class="cta-button" onclick="goToScreen(4)">GERAR RELATÓRIO DE AÇÃO</button>
 
-            <div class="final-cta" style="margin-top: 30px;"> <div class="cta-box">
+            <div class="final-cta" style="margin-top: 30px;">
+                <div class="cta-box">
                     <p class="cta-title">Deseja receber uma proposta de crescimento para seu perfil?</p>
                     <p class="cta-action">Envie a palavra <span class="neon-cyan">CRESCIMENTO</span> no nosso Instagram.</p>
                 </div>
