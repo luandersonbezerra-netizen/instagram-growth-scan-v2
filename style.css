@@ -280,3 +280,33 @@ p {
     color: var(--color-neon);
     text-shadow: var(--color-neon-shadow);
 }
+
+/*
+ * ADICIONADO: Estilo do Campo de Input
+*/
+.input-text {
+    width: 80%;
+    padding: 12px 15px;
+    margin: 15px 0 25px;
+    box-sizing: border-box;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-neon);
+    color: var(--color-neon);
+    font-size: 1em;
+    border-radius: 6px;
+    font-family: var(--font-secondary);
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.input-text::placeholder {
+    color: rgba(0, 255, 255, 0.7);
+}
+
+.input-text:focus {
+    outline: none;
+    border-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+}
+
