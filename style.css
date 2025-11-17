@@ -42,7 +42,10 @@ body {
 /* Telas */
 .screen {
     display: none;
-    text-align: center;
+    text-align: center;#app-container {
+    /* ... outros estilos ... */
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+    text-align: center; /* <-- ADICIONE ESTA LINHA */
     min-height: 500px; /* Altura mínima para consistência */
 }
 
@@ -308,5 +311,13 @@ p {
     outline: none;
     border-color: #00ffff;
     box-shadow: 0 0 10px #00ffff;
+}
+/*
+ * ADICIONADO: Estilo da Logomarca
+*/
+.app-logo {
+    width: 180px;  /* <-- Ajuste este tamanho conforme precisar */
+    height: auto;  /* Mantém a proporção */
+    margin-bottom: 20px; /* Espaço entre o logo e o título */
 }
 
