@@ -1,0 +1,75 @@
+HTML
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Growth Scan | Análise de Perfil para Viralização</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="app-container">
+        <div id="screen-1" class="screen active">
+            <header class="neon-title">
+                <h1>INSTAGRAM <span class="neon-cyan">GROWTH</span> SCAN</h1>
+            </header>
+            <p>Diagnóstico de Perfil para Viralização e Resultados.</p>
+            <p class="description-text">Responda 6 perguntas chave e descubra o seu nível de prontidão para o crescimento orgânico e a performance de alto impacto no Instagram.</p>
+            <button class="cta-button" onclick="goToScreen(2)">INICIAR ANÁLISE</button>
+            <footer class="footer-text">v2.0 | IA-Integrada</footer>
+        </div>
+
+        <div id="screen-2" class="screen">
+            <header>
+                <h2>DIAGNÓSTICO: <span id="current-question-title" class="neon-cyan">PERFIL ESTRUTURAL</span></h2>
+            </header>
+            <div id="questions-container">
+                </div>
+            <button class="cta-button" onclick="nextQuestion()">PRÓXIMA PERGUNTA</button>
+        </div>
+
+        <div id="screen-3" class="screen">
+            <header>
+                <h2>RESULTADO <span class="neon-cyan">DO SCAN</span></h2>
+            </header>
+            <div class="result-box">
+                <p>SUA PONTUAÇÃO FINAL:</p>
+                <div id="final-score" class="score neon-score">0</div>
+                <p>SEU NÍVEL DE CRESCIMENTO:</p>
+                <div id="final-level" class="level-badge"></div>
+            </div>
+            <p class="description-text" id="level-description"></p>
+            <button class="cta-button" onclick="goToScreen(4)">GERAR RELATÓRIO DE AÇÃO</button>
+        </div>
+
+        <div id="screen-4" class="screen">
+            <header>
+                <h2>RELATÓRIO <span class="neon-cyan">INTELIGENTE</span></h2>
+            </header>
+            
+            <div class="report-area">
+                <p class="report-pre-text">Análise Profissional da Sua Estratégia de Conteúdo:</p>
+                <div id="ai-report-text" class="report-content">
+                    <p class="loading-text">Analisando suas respostas e gerando o plano de ação...</p>
+                    <div class="spinner"></div>
+                </div>
+            </div>
+
+            <div class="final-cta">
+                <div class="cta-box">
+                    <p class="cta-title">Quer um diagnóstico completo e personalizado do seu posicionamento?</p>
+                    <p class="cta-action">Envie a palavra <span class="neon-cyan">CRESCIMENTO</span> no nosso Instagram.</p>
+                </div>
+            </div>
+
+            <button class="cta-button" onclick="resetApp()">REINICIAR SCAN</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

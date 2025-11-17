@@ -1,0 +1,11 @@
+JSON
+
+{
+  "name": "instagram-growth-scan-v2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API segura para o Instagram Growth Scan V2",
+  "dependencies": {
+    "@google/generative-ai": "^0.11.3"
+  }
+}
